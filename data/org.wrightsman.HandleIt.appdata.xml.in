@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.wrightsman.HandleIt</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <name>HandleIt</name>
+  <summary>Adaptive task/to-do manager</summary>
+
+  <description>
+    <p>
+      HandleIt is an adaptive task manager that lets you organize your life at
+      any screen size, desktop or mobile.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.wrightsman.HandleIt.desktop</launchable>
+
+  <provides>
+    <binary>handleit</binary>
+  </provides>
+
+  <custom>
+    <value key="Purism::form_factor">workstation</value>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
+</component>

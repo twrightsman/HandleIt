@@ -1,0 +1,7 @@
+data/org.wrightsman.HandleIt.desktop.in
+data/org.wrightsman.HandleIt.appdata.xml.in
+data/org.wrightsman.HandleIt.gschema.xml
+data/ui/Window.ui
+src/main.py
+src/window.py
+

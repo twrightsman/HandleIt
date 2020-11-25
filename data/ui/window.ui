@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <requires lib="libhandy" version="1.0"/>
+  <object class="GtkPopoverMenu" id="popover_menu_app">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">New Database</property>
+            <property name="action_name">win.file.new</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">Open Database</property>
+            <property name="action_name">win.file.open</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">Help</property>
+            <property name="action_name">app.help</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">About HandleIt</property>
+            <property name="action_name">app.about</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopoverMenu" id="popover_menu_sort">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">Due Date</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">Priority</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">Clear Sort</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopoverMenu" id="popover_menu_list">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkModelButton">
+            <property name="visible">True</property>
+            <property name="text">Filters</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <template class="HandleItWindow" parent="HdyApplicationWindow">
+    <property name="can_focus">False</property>
+    <property name="default_width">700</property>
+    <property name="default_height">500</property>
+    <property name="icon_name">org.wrightsman.HandleIt</property>
+    <property name="title">HandleIt</property>
+    <child>
+      <object class="HdyLeaflet" id="leaflet_main">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="hhomogeneous-folded">True</property>
+        <property name="hhomogeneous-unfolded">False</property>
+        <child>
+          <object class="GtkBox" id="leaf_sidebar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="vexpand">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="HdyHeaderBar">
+                <property name="can_focus">False</property>
+                <property name="title">HandleIt</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkToggleButton">
+                        <property name="visible">False</property>
+                        <property name="no_show_all">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">document-edit-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="popover">popover_menu_app</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">open-menu-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="pack_type">end</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hscrollbar-policy">never</property>
+                <child>
+                  <object class="GtkViewport">
+                    <child>
+                      <object class="HdyClamp">
+                        <property name="maximum_size">325</property>
+                        <child>
+                          <object class="Sidebar" id="listbox_sidebar">
+                            <property name="vexpand">True</property>
+                            <property name="width_request">250</property>
+                            <property name="name">sidebar</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">sidebar</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="navigatable">False</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="leaf_tasks">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="expand">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="HdyHeaderBar" id="headerbar_leaf_tasks">
+                <property name="can_focus">False</property>
+                <property name="show_close_button">True</property>
+                <property name="decoration_layout">:close</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkButton" id="button_back">
+                        <property name="visible">false</property>
+                        <property name="no_show_all">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="_on_back_clicked" />
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">go-previous-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkMenuButton" id="button_sort">
+                        <property name="visible">False</property>
+                        <property name="no_show_all">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="popover">popover_menu_sort</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">view-sort-ascending-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="button_taskedit">
+                        <property name="visible">False</property>
+                        <property name="no_show_all">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="toggled" handler="_on_taskedit_toggled" />
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">document-edit-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkToggleButton" id="button_search">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="sensitive">False</property>
+                        <signal name="toggled" handler="_on_search_toggled" />
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">system-search-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkMenuButton">
+                        <property name="visible">False</property>
+                        <property name="no_show_all">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="popover">popover_menu_list</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="icon_name">view-more-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="pack_type">end</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="stack_views">
+                <property name="can_focus">False</property>
+                <property name="visible_child">view_list</property>
+                <child>
+                  <object class="GtkBox" id="view_list">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="name">view_list</property>
+                    <child>
+                      <object class="HdySearchBar" id="search_bar">
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkEntry" id="entry_search">
+                            <property name="visible">True</property>
+                            <property name="placeholder_text" translatable="yes">Search your tasks...</property>
+                            <property name="margin">2</property>
+                            <signal name="activate" handler="_on_search_submitted" />
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="hscrollbar-policy">never</property>
+                        <child>
+                          <object class="GtkViewport">
+                            <child>
+                              <object class="HdyClamp">
+                                <property name="maximum_size">600</property>
+                                <child>
+                                  <object class="TaskList" id="tasklist">
+                                    <property name="visible">True</property>
+                                    <property name="expand">True</property>
+                                    <property name="selection_mode">none</property>
+                                    <property name="name">taskbox</property>
+                                    <child type="placeholder">
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <property name="valign">center</property>
+                                        <child>
+                                          <object class="GtkImage">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="icon_name">object-select-symbolic</property>
+                                            <property name="pixel_size">128</property>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel">
+                                            <property name="visible">True</property>
+                                            <property name="margin_top">5</property>
+                                            <property name="label">No tasks to display</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">view_list</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <child>
+                      <object class="GtkViewport">
+                        <child>
+                          <object class="TaskDetailView" id="view_task">
+                            <property name="visible">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">view_task</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">tasks</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=HandleIt
+Comment=Adaptive to-do manager
+Exec=handleit
+Icon=org.wrightsman.HandleIt
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true
+# Translators: Do NOT translate or transliterate this text (these are enum types)!
+X-Purism-FormFactor=Workstation;Mobile;

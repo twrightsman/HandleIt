@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <requires lib="libhandy" version="1.0"/>
+
+  <template class="TaskDetailView" parent="GtkBox">
+    <property name="name">taskdetailview</property>
+    <property name="halign">fill</property>
+    <property name="expand">True</property>
+    <child>
+      <object class="HdyClamp">
+        <property name="maximum_size">380</property>
+        <child>
+          <object class="GtkStack" id="stack_mode">
+            <child>
+              <object class="GtkGrid" id="mode_view">
+                <property name="orientation">vertical</property>
+                <property name="column_spacing">6</property>
+                <property name="row_spacing">6</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkLabel" id="label_description">
+                    <property name="name">description</property>
+                    <property name="margin_bottom">12</property>
+                    <property name="halign">start</property>
+                    <property name="wrap">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="halign">center</property>
+                    <property name="hexpand">True</property>
+                    <property name="margin_bottom">12</property>
+                    <property name="name">button_box</property>
+                    <child>
+                      <object class="GtkButton" id="button_complete">
+                        <property name="margin_right">12</property>
+                        <signal name="clicked" handler="_on_complete_button_clicked" />
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_delete">
+                        <signal name="clicked" handler="_on_delete_button_clicked" />
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">view</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid" id="mode_edit">
+                <property name="orientation">vertical</property>
+                <property name="column_spacing">6</property>
+                <property name="row_spacing">6</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkEntry" id="entry_description">
+                    <property name="name">description</property>
+                    <property name="margin_bottom">12</property>
+                    <property name="halign">fill</property>
+                    <property name="hexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="halign">center</property>
+                    <property name="margin_bottom">12</property>
+                    <property name="name">button_box</property>
+                    <child>
+                      <object class="GtkButton" id="button_edit_cancel">
+                        <property name="label">Cancel</property>
+                        <property name="margin_right">12</property>
+                        <signal name="clicked" handler="_on_edit_cancel_button_clicked" />
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_edit_confirm">
+                        <property name="label">Save</property>
+                        <signal name="clicked" handler="_on_edit_confirm_button_clicked" />
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">notes</property>
+                    <property name="halign">end</property>
+                    <style>
+                      <class name="attr-label"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="hexpand">True</property>
+                    <property name="hscrollbar-policy">never</property>
+                    <child>
+                      <object class="GtkTextView" id="textview_notes">
+                        <property name="hexpand">True</property>
+                        <property name="wrap_mode">word-char</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">edit</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

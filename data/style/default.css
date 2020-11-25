@@ -1,0 +1,95 @@
+leaflet.folded list#sidebar row {
+  background-color: transparent;
+}
+
+leaflet.folded list#sidebar row:selected image {
+  color: @theme_text_color;
+}
+
+leaflet.folded list#sidebar row:selected label {
+  color: @theme_text_color;
+}
+
+list#sidebar {
+  background-color: @theme_unfocused_bg_color;
+}
+
+list#sidebar row box {
+  margin: 10px;
+}
+
+list#sidebar row box label {
+  color: @theme_fg_color;
+}
+
+list#sidebar row box image {
+  color: @theme_fg_color;
+  margin-right: 8px;
+}
+
+list#sidebar row:selected box label {
+  color: @theme_selected_fg_color;
+}
+
+list#sidebar row:selected box image {
+  color: @theme_selected_fg_color
+}
+
+list#sidebar row#Trash {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: @borders;
+}
+
+box#view_list {
+  background-color: @theme_base_color
+}
+
+box#view_list list {
+  padding: 4px
+}
+
+box#view_list list row {
+  border-width: 1px;
+  border-style: solid;
+  border-color: @borders;
+  border-radius: 3px;
+  margin: 4px;
+}
+
+list#taskbox:first-child {
+  margin-top: 10px;
+}
+
+list#taskbox:last-child {
+  margin-bottom: 10px;
+}
+
+list#taskbox row > box {
+  margin: 10px;
+}
+
+list#taskbox row checkbutton {
+  margin-right: 8px;
+}
+
+list#taskbox row#task label#description {
+  font-weight: bold;
+}
+
+box#taskdetailview {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+box#taskdetailview #description {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+box#taskdetailview .attr-label {
+  color: @insensitive_fg_color;
+  font-weight: bold;
+}

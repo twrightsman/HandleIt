@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/wrightsman/HandleIt">
+    <file>style/default.css</file>
+    <file preprocess="xml-stripblanks">ui/taskrow.ui</file>
+    <file preprocess="xml-stripblanks">ui/taskdetailview.ui</file>
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file>icons/org.wrightsman.HandleIt.svg</file>
+  </gresource>
+</gresources>

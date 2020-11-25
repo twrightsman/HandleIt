@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="handleit">
+  <schema id="org.wrightsman.HandleIt" path="/org/wrightsman/HandleIt/">
+  </schema>
+</schemalist>
