@@ -1,0 +1,28 @@
+Source: handleit
+Section: python
+Priority: optional
+Maintainer: Travis Wrightsman <twrightsman@librem.one>
+Build-Depends: debhelper-compat (= 12),
+               libglib2.0-dev-bin,
+               dh-python,
+               meson (>= 0.50.0),
+               python3 (>= 3.7)
+Standards-Version: 4.5.0
+Rules-Requires-Root: no
+Homepage: https://github.com/twrightsman/HandleIt
+Vcs-Browser: https://github.com/twrightsman/HandleIt
+Vcs-Git: https://github.com/twrightsman/HandleIt.git
+
+Package: handleit
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         gsettings-desktop-schemas (>= 3.28),
+         gnome-settings-daemon,
+         python3-gi (>= 3.38),
+         gir1.2-handy-1,
+         libhandy-1-0 (>= 1.0.2)
+Description: adaptive to-do/task manager
+ An adaptive task manager written with Python, GTK,
+ and libhandy.
+
