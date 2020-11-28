@@ -35,6 +35,8 @@ class TaskDetailView(Gtk.Box):
     entry_due_date = Gtk.Template.Child()
     entry_due_time = Gtk.Template.Child()
 
+    spinbutton_priority = Gtk.Template.Child()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -260,6 +262,8 @@ class TaskDetailView(Gtk.Box):
             self.entry_due_date.set_text("")
             self.entry_due_time.set_text("")
 
+        self.spinbutton_priority.set_value(self.task.priority)
+
         self.mode_edit.show_all()
 
     @Gtk.Template.Callback()
@@ -385,6 +389,10 @@ class TaskDetailView(Gtk.Box):
                     changes.append("due_time")
                 except ValueError:
                     pass
+
+        if self.spinbutton_priority.get_value_as_int() != self.task.priority:
+            kwargs["new_priority"] = self.spinbutton_priority.get_value_as_int()
+            changes.append("priority")
 
         journal = self.get_toplevel().journal
         journal.update_task(self.task.task_id, **kwargs)
