@@ -87,6 +87,9 @@ class HandleItWindow(Handy.ApplicationWindow):
         self.search_bar.connect(
             "notify::search-mode-enabled", self._on_search_mode_toggled
         )
+        self.stack_views.connect(
+            "notify::visible-child-name", self._on_view_stack_mode_switch
+        )
 
     def do_destroy(self):
         """ Close the Journal database connection, if it exists, on window destruction """
@@ -251,6 +254,11 @@ class HandleItWindow(Handy.ApplicationWindow):
 
     def _on_view_task_mode_switch(self, stack, visible_child_name):
         self.button_taskedit.set_active(stack.get_visible_child_name() == "edit")
+
+    def _on_view_stack_mode_switch(self, stack, visible_child_name):
+        if stack.get_visible_child_name() != "view_task":
+            # make sure task view returns to view mode after leaving it
+            self.view_task.stack_mode.set_visible_child_name("view")
 
     def _reload_view(self):
         current_view = self._view_history[-1]
