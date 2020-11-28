@@ -297,7 +297,7 @@
                     <property name="adjustment">adjustment_priority</property>
                     <property name="numeric">True</property>
                     <property name="snap_to_ticks">True</property>
-                    <property name="update_policy">if_valid</property>
+                    <property name="update_policy">if-valid</property>
                     <property name="width_chars">5</property>
                     <property name="max_width_chars">5</property>
                     <property name="max_length">5</property>
