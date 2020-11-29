@@ -309,6 +309,50 @@
                     <property name="width">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">lists</property>
+                    <property name="halign">end</property>
+                    <style>
+                      <class name="attr-label"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">8</property>
+                    <property name="width">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="hexpand">True</property>
+                    <property name="height_request">100</property>
+                    <property name="hscrollbar-policy">never</property>
+                    <child>
+                      <object class="GtkViewport">
+                        <child>
+                          <object class="GtkListBox" id="listbox_lists">
+                            <property name="selection_mode">none</property>
+                            <property name="hexpand">True</property>
+                            <child>
+                              <object class="GtkListBoxRow">
+                                <property name="name">combobox</property>
+                                <child>
+                                  <object class="GtkComboBoxText" id="combobox_new_lists" />
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">9</property>
+                    <property name="width">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="name">edit</property>

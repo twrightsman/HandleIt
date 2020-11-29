@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import List
+from typing import List, Dict
 
 import gi
 
@@ -36,9 +36,14 @@ class TaskDetailView(Gtk.Box):
     entry_due_time = Gtk.Template.Child()
 
     spinbutton_priority = Gtk.Template.Child()
+    listbox_lists: Gtk.ListBox = Gtk.Template.Child()
+    combobox_new_lists: Gtk.ComboBoxText = Gtk.Template.Child()
+    _combobox_list_name_to_id: Dict[str, int]
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.combobox_new_lists.connect("changed", self._on_list_combobox_changed)
 
     @property
     def task(self):
@@ -56,6 +61,7 @@ class TaskDetailView(Gtk.Box):
         self._load_edit_mode()
 
     def reload(self):
+        self._task = self.get_toplevel().journal.get_task(self.task.task_id)
         self._load_view_mode()
         self._load_edit_mode()
 
@@ -230,6 +236,8 @@ class TaskDetailView(Gtk.Box):
         self.mode_view.show_all()
 
     def _load_edit_mode(self):
+        journal = self.get_toplevel().journal
+
         self.entry_description.set_text(self.task.description)
         if self.task.notes is not None:
             self.textview_notes.get_buffer().set_text(self.task.notes)
@@ -268,7 +276,57 @@ class TaskDetailView(Gtk.Box):
 
         self.spinbutton_priority.set_value(self.task.priority)
 
+        # reset and add the lists
+        self.listbox_lists.foreach(
+            lambda row: row.destroy() if row.get_name() != "combobox" else None
+        )
+        tasklists = set()
+        for tasklist in journal.get_lists(self.task.lists):
+            self._add_list_listbox_edit(tasklist.name, tasklist.list_id)
+            tasklists.add(tasklist.name)
+
+        # add the new list dropdown
+        self.combobox_new_lists.remove_all()
+        self.combobox_new_lists.append_text("Add to list...")
+        self.combobox_new_lists.set_active(0)
+        self._combobox_list_name_to_id = {}
+        for tasklist in journal.lists:
+            if tasklist.name not in tasklists:
+                self._combobox_list_name_to_id[tasklist.name] = tasklist.list_id
+                self.combobox_new_lists.append_text(tasklist.name)
+
         self.mode_edit.show_all()
+
+    def _add_list_listbox_edit(self, tasklist_name: str, tasklist_id: int):
+        label_name = Gtk.Label(label=tasklist_name)
+        button_close = Gtk.Button(image=Gtk.Image(icon_name="window-close-symbolic"))
+        row = Gtk.ListBoxRow()
+        button_close.row = row
+        button_close.connect("clicked", self._on_list_delete_button_clicked)
+        box = Gtk.Box(orientation="horizontal")
+        box.pack_start(label_name, True, True, 0)
+        box.pack_end(button_close, False, False, 0)
+        row.list_id = tasklist_id
+        row.list_name = tasklist_name
+        row.add(box)
+        n_children = len(self.listbox_lists.get_children())
+        self.listbox_lists.insert(row, n_children - 1)
+        row.show_all()
+
+    def _on_list_combobox_changed(self, combobox):
+        selected_id = combobox.get_active()
+        selected_list = combobox.get_active_text()
+        if selected_list not in {None, "Add to list..."}:
+            combobox.remove(selected_id)
+            self._add_list_listbox_edit(
+                selected_list, self._combobox_list_name_to_id[selected_list]
+            )
+            del self._combobox_list_name_to_id[selected_list]
+
+    def _on_list_delete_button_clicked(self, button):
+        self.combobox_new_lists.append_text(button.row.list_name)
+        self._combobox_list_name_to_id[button.row.list_name] = button.row.list_id
+        button.row.destroy()
 
     @Gtk.Template.Callback()
     def _on_complete_button_clicked(self, button_complete):
@@ -327,6 +385,8 @@ class TaskDetailView(Gtk.Box):
         When the confirm button on the task detail edit mode is clicked, save
         the changes to the task in the journal and switch back to view mode.
         """
+        journal = self.get_toplevel().journal
+
         # check what has changed
         kwargs = {}
         changes: List[str] = []
@@ -398,7 +458,21 @@ class TaskDetailView(Gtk.Box):
             kwargs["new_priority"] = self.spinbutton_priority.get_value_as_int()
             changes.append("priority")
 
-        journal = self.get_toplevel().journal
+        listbox_list_ids = {
+            row.list_id
+            for row in self.listbox_lists.get_children()
+            if hasattr(row, "list_id")
+        }
+        task_list_ids = set(self.task.lists)
+        if listbox_list_ids != task_list_ids:
+            added = listbox_list_ids - task_list_ids
+            removed = task_list_ids - listbox_list_ids
+            for list_id in added:
+                journal.add_task_to_list(self.task.task_id, list_id)
+            for list_id in removed:
+                journal.delete_task_from_list(self.task.task_id, list_id)
+            changes.append("lists")
+
         journal.update_task(self.task.task_id, **kwargs)
         # reload the task
         self._task = journal.get_task(self.task.task_id)
@@ -438,4 +512,4 @@ class TaskDetailView(Gtk.Box):
 
     @GObject.Signal(arg_types=(Gtk.ListStore,))
     def task_modified(self, modified_attributes):
-        pass
+        self.reload()

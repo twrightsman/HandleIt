@@ -220,6 +220,8 @@ class HandleItWindow(Handy.ApplicationWindow):
             self.sidebar.update_counts()
         if "is_trashed" in modified_attributes:
             self.sidebar.update_counts()
+        if "lists" in modified_attributes:
+            self.sidebar.update_counts()
 
     def _on_task_row_modified(
         self, tasklist: TaskList, row: TaskRow, modified_attribute: str
