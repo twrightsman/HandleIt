@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 
@@ -8,11 +8,11 @@ __pycache__/
 
 # Distribution / packaging
 *.egg-info
-.flatpak-builder/
+.flatpak-builder
 
 # IDE files
-.idea/
-.vscode/
+.idea
+.vscode
 
 # Type checking
 .mypy_cache
