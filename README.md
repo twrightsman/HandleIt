@@ -66,15 +66,15 @@ python3 -m unittest discover -s test -v
 ```
 $ mkdir /tmp/handleit_build
 $ chmod o+rx /tmp/handleit_build
-$ tar --exclude-vcs --exclude-vcs-ignores -cvzf /tmp/handleit_build/handleit_0.1.0.orig.tar.gz HandleIt
+$ tar --exclude-vcs --exclude-vcs-ignores -cvzf /tmp/handleit_build/handleit_0.2.0.orig.tar.gz HandleIt
 $ podman run --rm -i -t -v /tmp/handleit_build:/tmp/handleit_build debian:testing /bin/bash
 # apt update && apt upgrade -y && apt install -y devscripts
 # cd /tmp/handleit_build
-# tar -xvf handleit_0.1.0.orig.tar.gz
+# tar -xvf handleit_0.2.0.orig.tar.gz
 # mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' HandleIt/dist/debian/control
 # cd HandleIt
-# mv dist/debian debian
+# cp -R dist/debian debian
 # debuild
 # exit
-$ sudo apt install /tmp/handleit_build/handleit_0.1.0-1_all.deb
+$ sudo apt install /tmp/handleit_build/handleit_0.2.0-1_all.deb
 ```

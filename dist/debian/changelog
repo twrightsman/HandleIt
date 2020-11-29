@@ -1,3 +1,11 @@
+handleit (0.2.0-1) UNRELEASED; urgency=low
+
+  * Implement changing task priority, completed/start/due times, and list
+    membership in GUI
+  * Implement adding and removing lists from the sidebar
+
+ -- Travis Wrightsman <twrightsman@librem.one>  Sun, 29 Nov 2020 14:05:00 -0500
+
 handleit (0.1.0-1) UNRELEASED; urgency=low
 
   * initial release
