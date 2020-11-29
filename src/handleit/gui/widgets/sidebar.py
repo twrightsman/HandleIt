@@ -61,7 +61,7 @@ class Sidebar(Gtk.Box):
             self._count_labels[tasklist.list_id] = self._add_row(tasklist)
             self._edit_entries[tasklist.list_id] = self._add_edit_row(tasklist)
 
-        row = Gtk.ListBoxRow(selectable=False)
+        row = Gtk.ListBoxRow()
         entry = Gtk.Entry(placeholder_text="Create new list...")
         entry.connect("activate", self._on_new_list_entry_activated)
         row.add(entry)
