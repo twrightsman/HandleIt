@@ -1,41 +1,55 @@
-leaflet.folded list#sidebar row {
+leaflet.folded box#sidebar list row {
   background-color: transparent;
 }
 
-leaflet.folded list#sidebar row:selected image {
+leaflet.folded box#sidebar list row:selected image {
   color: @theme_text_color;
 }
 
-leaflet.folded list#sidebar row:selected label {
+leaflet.folded box#sidebar list row:selected label {
   color: @theme_text_color;
 }
 
-list#sidebar {
+box#sidebar list {
   background-color: @theme_unfocused_bg_color;
 }
 
-list#sidebar row box {
+box#sidebar list row>box,row>entry {
   margin: 10px;
 }
 
-list#sidebar row box label {
+box#sidebar list row box label {
   color: @theme_fg_color;
 }
 
-list#sidebar row box image {
+box#sidebar list row box image {
   color: @theme_fg_color;
   margin-right: 8px;
 }
 
-list#sidebar row:selected box label {
+box#sidebar list row button#close {
+  border: 0px;
+  border-color: transparent;
+  box-shadow: none;
+  background-color: transparent;
+  background-image: none;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+box#sidebar list row button#close image {
+  margin: 0px;
+}
+
+box#sidebar list row:selected box label {
   color: @theme_selected_fg_color;
 }
 
-list#sidebar row:selected box image {
+box#sidebar list row:selected box image {
   color: @theme_selected_fg_color
 }
 
-list#sidebar row#Trash {
+box#sidebar list row#Trash {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: @borders;

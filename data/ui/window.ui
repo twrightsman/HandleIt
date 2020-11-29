@@ -118,11 +118,12 @@
                   <object class="GtkBox">
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkToggleButton">
-                        <property name="visible">False</property>
-                        <property name="no_show_all">True</property>
+                      <object class="GtkToggleButton" id="button_sidebar_edit">
+                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="sensitive">False</property>
+                        <signal name="toggled" handler="_on_sidebar_edit_toggled" />
                         <child>
                           <object class="GtkImage">
                             <property name="visible">True</property>
@@ -187,11 +188,7 @@
                       <object class="HdyClamp">
                         <property name="maximum_size">325</property>
                         <child>
-                          <object class="Sidebar" id="listbox_sidebar">
-                            <property name="vexpand">True</property>
-                            <property name="width_request">250</property>
-                            <property name="name">sidebar</property>
-                          </object>
+                          <object class="Sidebar" id="sidebar" />
                         </child>
                       </object>
                     </child>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <requires lib="libhandy" version="1.0"/>
+
+  <template class="Sidebar" parent="GtkBox">
+    <property name="vexpand">True</property>
+    <property name="orientation">vertical</property>
+    <property name="width_request">250</property>
+    <property name="name">sidebar</property>
+    <child>
+      <object class="GtkStack" id="stack_mode">
+        <child>
+          <object class="GtkListBox" id="mode_view">
+            <property name="name">view</property>
+            <child>
+              <object class="GtkListBoxRow">
+                <property name="name">Pending</property>
+                <property name="selectable">False</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon_name">checkbox-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Pending</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_pending_count" />
+                      <packing>
+                        <property name="pack-type">end</property>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkListBoxRow">
+                <property name="name">Completed</property>
+                <property name="selectable">False</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon_name">checkbox-checked-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Completed</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_completed_count" />
+                      <packing>
+                        <property name="pack-type">end</property>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkListBoxRow">
+                <property name="name">Trash</property>
+                <property name="selectable">False</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon_name">user-trash-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Trash</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_trash_count" />
+                      <packing>
+                        <property name="pack-type">end</property>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="name">view</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkListBox" id="mode_edit">
+            <property name="name">edit</property>
+          </object>
+          <packing>
+            <property name="name">edit</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -39,7 +39,7 @@ class HandleItWindow(Handy.ApplicationWindow):
 
     leaflet_main = Gtk.Template.Child()
 
-    listbox_sidebar = Gtk.Template.Child()
+    sidebar = Gtk.Template.Child()
 
     search_bar = Gtk.Template.Child()
 
@@ -48,6 +48,7 @@ class HandleItWindow(Handy.ApplicationWindow):
     view_list = Gtk.Template.Child()
     view_task = Gtk.Template.Child()
 
+    button_sidebar_edit = Gtk.Template.Child()
     button_back = Gtk.Template.Child()
     button_sort = Gtk.Template.Child()
     button_taskedit = Gtk.Template.Child()
@@ -68,8 +69,12 @@ class HandleItWindow(Handy.ApplicationWindow):
         action_open_file.connect("activate", self._on_open_file)
         self.add_action(action_open_file)
 
-        self.listbox_sidebar.connect("row-activated", self._on_sidebar_row_activated)
-        self.listbox_sidebar.connect("row-selected", self._on_sidebar_row_selected)
+        self.sidebar.connect("list_deleted", self._on_sidebar_list_deleted)
+        self.sidebar.stack_mode.connect(
+            "notify::visible_child_name", self._on_sidebar_mode_switch
+        )
+        self.sidebar.mode_view.connect("row-activated", self._on_sidebar_row_activated)
+        self.sidebar.mode_view.connect("row-selected", self._on_sidebar_row_selected)
 
         self.leaflet_main.connect("notify::folded", self._on_leaflet_fold)
 
@@ -158,6 +163,18 @@ class HandleItWindow(Handy.ApplicationWindow):
     def _on_sidebar_row_selected(self, list_box, row):
         self._load_list_view(row.list_id, row.list_name)
 
+    def _on_sidebar_list_deleted(self, sidebar: Gtk.Box, list_id: int):
+        if list_id in [
+            v.disp_id for v in filter(lambda v: v.view == View.LIST, self._view_history)
+        ]:
+            # we have the deleted list loaded in the view history, change to pending
+            self.sidebar.mode_view.select_row(
+                self.sidebar.mode_view.get_row_at_index(0)
+            )
+        elif self._view_history[-1].view == View.DETAIL:
+            # we are in the task detail view, reload it
+            self.view_task.reload()
+
     def _on_task_row_activated(self, list_box, row):
         self._load_detail_view(row.task.task_id)
 
@@ -182,27 +199,27 @@ class HandleItWindow(Handy.ApplicationWindow):
             self._journal.add_task_relationship(
                 current_view.disp_id, new_task_id, TaskRelationship.PARENT
             )
-        self.listbox_sidebar.update_counts()
+        self.sidebar.update_counts()
         self._reload_view()
 
     def _on_task_deleted(self, task_view: TaskDetailView):
         self._journal.delete_task(task_view.task.task_id)
-        trash_row = self.listbox_sidebar.get_row_at_index(2)
+        trash_row = self.sidebar.mode_view.get_row_at_index(2)
         # load Trash list
         self._load_list_view(trash_row.list_id, trash_row.list_name)
         # select Trash in sidebar
-        self.listbox_sidebar.select_row(trash_row)
+        self.sidebar.mode_view.select_row(trash_row)
         # update counts
-        self.listbox_sidebar.update_counts()
+        self.sidebar.update_counts()
 
     def _on_task_modified(
         self, task_view: TaskDetailView, modified_attributes: Gio.ListStore
     ):
         modified_attributes = [row[0] for row in modified_attributes]
         if "completion_time" in modified_attributes:
-            self.listbox_sidebar.update_counts()
+            self.sidebar.update_counts()
         if "is_trashed" in modified_attributes:
-            self.listbox_sidebar.update_counts()
+            self.sidebar.update_counts()
 
     def _on_task_row_modified(
         self, tasklist: TaskList, row: TaskRow, modified_attribute: str
@@ -212,15 +229,34 @@ class HandleItWindow(Handy.ApplicationWindow):
                 self._journal.update_task(
                     row.task.task_id, new_completion_time=datetime.now(timezone.utc)
                 )
-                if self._view_history[-1].disp_id == CoreTaskList.PENDING:
-                    # destroy the row if completed and in pending
+                if (
+                    self._view_history[-1].disp_id == CoreTaskList.PENDING
+                ) or isinstance(self._view_history[-1].disp_id, int):
+                    # destroy the row if completed and in pending or a custom list
                     row.destroy()
             else:
                 self._journal.update_task(row.task.task_id, new_completion_time=None)
                 if self._view_history[-1].disp_id == CoreTaskList.COMPLETED:
                     # destroy the row if uncompleted and in completed
                     row.destroy()
-            self.listbox_sidebar.update_counts()
+            self.sidebar.update_counts()
+
+    def _on_sidebar_mode_switch(self, stack, visible_child_name):
+        self.button_sidebar_edit.set_active(stack.get_visible_child_name() == "edit")
+
+    @Gtk.Template.Callback()
+    def _on_sidebar_edit_toggled(self, button):
+        if not button.get_active():
+            lists = {l.list_id: l.name for l in self.journal.lists}
+            # going back to view mode; check for updated entries, update lists, and reload
+            changed = False
+            for list_id, entry_text in self.sidebar.get_entry_texts().items():
+                if lists[list_id] != entry_text:
+                    changed = True
+                    self.journal.update_list(list_id, new_name=entry_text)
+            if changed:
+                self.sidebar.load_lists(self.journal.lists)
+        self.sidebar.set_edit_mode(button.get_active())
 
     def _set_button_visibility(self):
         if self._view_history:
@@ -349,28 +385,22 @@ class HandleItWindow(Handy.ApplicationWindow):
         logging.info(f"Opening file '{path}'")
         self._journal = Journal(path)
 
-        self.listbox_sidebar.foreach(lambda row: row.destroy())
-        self.listbox_sidebar.update_counts()
-        self.listbox_sidebar._make_selectable()
-        if (self.listbox_sidebar.get_selected_row() is not None) and (
-            self.listbox_sidebar.get_selected_row().list_id == CoreTaskList.PENDING
+        self.sidebar.load_lists(self._journal.lists)
+
+        if (self.sidebar.mode_view.get_selected_row() is not None) and (
+            self.sidebar.mode_view.get_selected_row().list_id == CoreTaskList.PENDING
         ):
             # just reload if already on pending
             self._reload_view()
         else:
             # select the pending row
-            self.listbox_sidebar.select_row(self.listbox_sidebar.get_row_at_index(0))
-
-        # add lists from database
-        for tasklist in self._journal.lists:
-            self.listbox_sidebar.add_row(
-                list_id=tasklist.list_id,
-                name=tasklist.name,
-                icon=tasklist.icon,
-                initial_count=self._journal.get_list_count(tasklist.list_id),
+            self.sidebar.mode_view.select_row(
+                self.sidebar.mode_view.get_row_at_index(0)
             )
-        self.listbox_sidebar.show_all()
 
+        self.sidebar.show_all()
+
+        self.button_sidebar_edit.set_sensitive(True)
         self.button_search.set_sensitive(True)
 
     def _on_open_file(self, action, param):

@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import enum
 from pathlib import Path
 import sqlite3
-from typing import Optional, List, Union, Dict, Any, Set
+from typing import Optional, List, Union, Dict, Any, Set, overload
 
 
 TaskAttribute = Union[str, int, float, bool]
@@ -256,7 +256,15 @@ class Journal:
             ).fetchone()[0]
         )
 
+    @overload
+    def get_list_count(self, list_id: List[int]) -> Dict[int, int]:
+        pass
+
+    @overload
     def get_list_count(self, list_id: Union[CoreTaskList, int]) -> int:
+        pass
+
+    def get_list_count(self, list_id):
         if isinstance(list_id, CoreTaskList):
             if list_id == CoreTaskList.PENDING:
                 count = self._get_pending_count()
@@ -271,6 +279,14 @@ class Journal:
                     (list_id,),
                 ).fetchone()[0]
             )
+        elif isinstance(list_id, list):
+            if all([isinstance(e, int) for e in list_id]):
+                count = {l: 0 for l in list_id}
+                query = f"SELECT task_lists.list_id, COUNT(*) FROM task_lists LEFT JOIN tasks ON task_lists.task_id = tasks.task_id WHERE task_lists.list_id IN ( {', '.join((['?'] * len(list_id)))} ) AND NOT tasks.is_trashed AND tasks.completion_dtm IS NULL GROUP BY task_lists.list_id"
+                for row in self._conn.execute(query, list_id):
+                    count[row["list_id"]] = row[1]
+            else:
+                raise TypeError("Can only search for lists of integer list IDs")
         else:
             raise TypeError(
                 "List IDs must be either integers or a built-in CoreTaskList"
@@ -299,7 +315,7 @@ class Journal:
             TaskList.from_sqlite_row(row) for row in self._conn.execute(query, list_ids)
         ]
 
-    def add_list(self, name: str, icon: str) -> int:
+    def add_list(self, name: str, icon: Optional[str] = None) -> int:
         """ Add a list to the end of user lists """
         # get current highest position of lists
         max_list_id = self._conn.execute("SELECT MAX(list_id) FROM lists").fetchone()[0]

@@ -55,6 +55,10 @@ class TaskDetailView(Gtk.Box):
         self._load_view_mode()
         self._load_edit_mode()
 
+    def reload(self):
+        self._load_view_mode()
+        self._load_edit_mode()
+
     def _add_single_row_view(self, title: str, value: str, row: int) -> None:
         label_title = Gtk.Label(title, halign=Gtk.Align.END)
         label_title.get_style_context().add_class("attr-label")

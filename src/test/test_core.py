@@ -25,6 +25,12 @@ class TestJournal(unittest.TestCase):
         )
         self.assertEqual(self.journal.get_list_count(1000), 0)
 
+        # test vectorized overload
+        list_counts = self.journal.get_list_count([1, 3, 500])
+        self.assertEqual(list_counts[1], 2)
+        self.assertEqual(list_counts[3], 2)
+        self.assertEqual(list_counts[500], 0)
+
     def test_lists(self):
         journal_lists = [l.name for l in self.journal.lists]
         self.assertIn("Scheduled", journal_lists)
