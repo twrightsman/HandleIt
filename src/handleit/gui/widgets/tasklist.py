@@ -16,6 +16,7 @@ class TaskRow(Gtk.ListBoxRow):
 
     button_checkbox = Gtk.Template.Child()
     label_description = Gtk.Template.Child()
+    label_attributes = Gtk.Template.Child()
 
     def __init__(self, task: Task, **kwargs):
         super().__init__(**kwargs)
@@ -23,6 +24,41 @@ class TaskRow(Gtk.ListBoxRow):
         self._task = task
         self.button_checkbox.set_active(task.completion_time is not None)
         self.label_description.set_label(task.description)
+
+        show_attributes = False
+        self.label_attributes.set_markup("")
+        if task.priority:
+            label = self.label_attributes.get_label()
+            self.label_attributes.set_markup(
+                label + (" | " if label else "") + f"Priority <b>{task.priority}</b>"
+            )
+            show_attributes = True
+
+        if task.start_time:
+            label = self.label_attributes.get_label()
+            self.label_attributes.set_markup(
+                label
+                + (" | " if label else "")
+                + "Starts on <b>{t:%b} {t.day}</b>".format(t=task.start_time)
+            )
+            show_attributes = True
+
+        if task.due_time:
+            label = self.label_attributes.get_label()
+            self.label_attributes.set_markup(
+                label
+                + (" | " if label else "")
+                + "Due on <b>{t:%b} {t.day}</b>".format(t=task.due_time)
+            )
+            show_attributes = True
+
+        if task.tags:
+            label = self.label_attributes.get_label()
+            self.label_attributes.set_markup(
+                label + (" | " if label else "") + ", ".join(task.tags)
+            )
+
+        self.label_attributes.set_visible(show_attributes)
 
         self.button_checkbox.connect("toggled", self._on_checkbox_toggled)
 

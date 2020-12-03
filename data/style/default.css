@@ -91,6 +91,10 @@ list#taskbox row#task label#description {
   font-weight: bold;
 }
 
+list#taskbox row#task label#attributes {
+  font-size: 0.9rem;
+}
+
 box#taskdetailview {
   margin-top: 20px;
   margin-left: 10px;
