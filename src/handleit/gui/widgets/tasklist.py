@@ -85,6 +85,9 @@ class TaskList(Gtk.ListBox):
         super().__init__(**kwargs)
 
     def load_tasks(self, tasks: List[Task], show_new_task_row: bool = True):
+        self._tasks = tasks
+        self._new_row = show_new_task_row
+
         # remove all current tasks from list
         self.foreach(lambda row: row.destroy())
 
@@ -103,6 +106,24 @@ class TaskList(Gtk.ListBox):
             self.add(new_task_row)
 
         self.show_all()
+
+    def sort_by_due(self):
+        self.load_tasks(
+            sorted(self._tasks, key=lambda t: (t.due_time is None, t.due_time)),
+            show_new_task_row=self._new_row,
+        )
+
+    def sort_by_priority(self):
+        self.load_tasks(
+            sorted(self._tasks, key=lambda t: t.priority, reverse=True),
+            show_new_task_row=self._new_row,
+        )
+
+    def sort_by_default(self):
+        self.load_tasks(
+            sorted(self._tasks, key=lambda t: t.position),
+            show_new_task_row=self._new_row,
+        )
 
     def _on_create_task(self, new_task_entry: Gtk.Entry):
         description = new_task_entry.get_text()

@@ -69,6 +69,18 @@ class HandleItWindow(Handy.ApplicationWindow):
         action_open_file.connect("activate", self._on_open_file)
         self.add_action(action_open_file)
 
+        action_sort_due = Gio.SimpleAction.new("sort.due", None)
+        action_sort_due.connect("activate", self._on_sort_due)
+        self.add_action(action_sort_due)
+
+        action_sort_priority = Gio.SimpleAction.new("sort.priority", None)
+        action_sort_priority.connect("activate", self._on_sort_priority)
+        self.add_action(action_sort_priority)
+
+        action_sort_clear = Gio.SimpleAction.new("sort.clear", None)
+        action_sort_clear.connect("activate", self._on_sort_clear)
+        self.add_action(action_sort_clear)
+
         self.sidebar.connect("list_deleted", self._on_sidebar_list_deleted)
         self.sidebar.stack_mode.connect(
             "notify::visible_child_name", self._on_sidebar_mode_switch
@@ -403,6 +415,7 @@ class HandleItWindow(Handy.ApplicationWindow):
         self.sidebar.show_all()
 
         self.button_sidebar_edit.set_sensitive(True)
+        self.button_sort.set_visible(True)
         self.button_search.set_sensitive(True)
 
     def _on_open_file(self, action, param):
@@ -427,6 +440,18 @@ class HandleItWindow(Handy.ApplicationWindow):
         if response == Gtk.ResponseType.OK:
             self._load_journal(Path(dialog.get_filename()))
         dialog.destroy()
+
+    def _on_sort_due(self, action, param):
+        if self._journal is not None:
+            self.tasklist.sort_by_due()
+
+    def _on_sort_priority(self, action, param):
+        if self._journal is not None:
+            self.tasklist.sort_by_priority()
+
+    def _on_sort_clear(self, action, param):
+        if self._journal is not None:
+            self.tasklist.sort_by_default()
 
     @Gtk.Template.Callback()
     def _on_search_toggled(self, button):

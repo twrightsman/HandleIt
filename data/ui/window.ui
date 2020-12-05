@@ -55,12 +55,14 @@
           <object class="GtkModelButton">
             <property name="visible">True</property>
             <property name="text">Due Date</property>
+            <property name="action_name">win.sort.due</property>
           </object>
         </child>
         <child>
           <object class="GtkModelButton">
             <property name="visible">True</property>
             <property name="text">Priority</property>
+            <property name="action_name">win.sort.priority</property>
           </object>
         </child>
         <child>
@@ -72,6 +74,7 @@
           <object class="GtkModelButton">
             <property name="visible">True</property>
             <property name="text">Clear Sort</property>
+            <property name="action_name">win.sort.clear</property>
           </object>
         </child>
       </object>
